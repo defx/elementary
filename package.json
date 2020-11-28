@@ -1,0 +1,57 @@
+{
+  "name": "@defx/elementary",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Simple Custom Elements.",
+  "main": "dist/elementary.min.js",
+  "browser": "dist/elementary.min.js",
+  "unpkg": "dist/elementary.min.js",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "dependencies": {
+    "glob": "^7.1.6",
+    "glob-promise": "^3.4.0",
+    "synergy": "1.3.5"
+  },
+  "devDependencies": {
+    "@open-wc/karma-esm": "^3.0.5",
+    "@open-wc/testing-karma": "^4.0.5",
+    "chai": "^4.2.0",
+    "coveralls": "^3.1.0",
+    "karma": "^5.1.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.3",
+    "mocha": "^8.1.1",
+    "rollup": "^2.26.4",
+    "rollup-plugin-terser": "^7.0.1"
+  },
+  "scripts": {
+    "test": "karma start --coverage",
+    "test:watch": "karma start --auto-watch=true --single-run=false",
+    "build": "rm -rf dist && rollup -c && npm run size",
+    "size": "gzip -c9 ./dist/elementary.min.js | wc -c",
+    "coveralls": "cat ./coverage/chrome/lcov.info | coveralls"
+  },
+  "keywords": [
+    "simple",
+    "declarative",
+    "data",
+    "binding",
+    "dom",
+    "ui",
+    "template",
+    "render",
+    "custom",
+    "elements",
+    "web",
+    "components"
+  ],
+  "author": "Matt Donkin",
+  "license": "ISC",
+  "directories": {
+    "test": "test"
+  }
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mocha Tests</title>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <div id="container"></div>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script>
+      mocha.setup('bdd');
+      let assert = chai.assert;
+      window.onload = function () {
+        mocha.run();
+      };
+
+      const mount = (html) =>
+        (document.getElementById('container').innerHTML = html);
+
+      const nextFrame = () =>
+        new Promise((resolve) => requestAnimationFrame(resolve));
+
+      window.mount = mount;
+      window.nextFrame = nextFrame;
+      window.assert = assert;
+      window.$ = (v) => document.querySelector('#container ' + v);
+      window.$$ = (v) =>
+        Array.from(document.querySelectorAll('#container ' + v));
+    </script>
+    <script type="module">
+      import define from '../index.js';
+      window.define = define;
+    </script>
+    <script type="module">
+      let count = 0;
+
+      const factory = ({ expanded = false, title, disabled = false }) => {
+        return {
+          id: `drawer-${count++}`,
+          title,
+          expanded,
+          disabled,
+          toggle() {
+            this.expanded = !this.expanded;
+          },
+        };
+      };
+
+      factory.observedAttributes = ['expanded'];
+
+      define('x-drawer', factory);
+    </script>
+    <template id="x-drawer">
+      <h3>
+        <button
+          id="{{ id }}"
+          disabled="{{ disabled }}"
+          aria-expanded="{{ expanded }}"
+          onclick="toggle"
+        >
+          {{ title }}
+        </button>
+      </h3>
+      <div hidden="{{ !expanded }}" aria-labelledby="{{ id }}">
+        <slot name="panel-content"></slot>
+      </div>
+    </template>
+    <script>
+      describe('define', () => {
+        it('should accept [title]', () => {
+          const title = 'test title';
+
+          mount(`<x-drawer title="${title}"></x-drawer>`);
+
+          let h3 = $('h3');
+
+          assert.equal(h3.textContent.trim(), title);
+        });
+
+        it('should be collapsed by default', () => {
+          mount(`<x-drawer></x-drawer>`);
+
+          let panel = $('[aria-labelledby]');
+          let button = $('button');
+
+          assert.equal(panel.hidden, true);
+          assert.equal(button.getAttribute('aria-expanded'), 'false');
+        });
+
+        it('should accept [expanded]', () => {
+          mount(`<x-drawer expanded></x-drawer>`);
+
+          let panel = $('[aria-labelledby]');
+          let button = $('button');
+
+          assert.equal(panel.hidden, false);
+          assert.equal(button.getAttribute('aria-expanded'), 'true');
+        });
+
+        it('should accept slotted panel content', () => {
+          mount(
+            `<x-drawer expanded><p slot="panel-content">FOO</p></x-drawer>`
+          );
+
+          let panel = $('[aria-labelledby]');
+
+          assert.equal(panel.innerHTML.trim(), '<p>FOO</p>');
+        });
+
+        it('should open when the accordion header button is clicked', async () => {
+          mount(`<x-drawer></x-drawer>`);
+
+          let panel = $('[aria-labelledby]');
+          $('button').click();
+          await nextFrame();
+
+          assert.equal(panel.hidden, false);
+        });
+
+        it('should open when the expanded attribute is set', async () => {
+          mount(`<x-drawer></x-drawer>`);
+
+          let el = $('x-drawer');
+          let panel = $('[aria-labelledby]');
+          el.setAttribute('expanded', '');
+          await nextFrame();
+
+          assert.equal(panel.hidden, false);
+        });
+
+        it('should close when the accordion header button is clicked', async () => {
+          mount(`<x-drawer expanded> </x-drawer>`);
+
+          let panel = $('[aria-labelledby]');
+
+          $('button').click();
+          await nextFrame();
+
+          assert.equal(panel.hidden, true);
+        });
+      });
+    </script>
+  </body>
+</html>
