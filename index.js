@@ -5,9 +5,9 @@ import mergeSlots from './slots.js';
 
 const initialAttributes = (node) => {
   const o = {};
-  node.attributes.forEach(({ name, value }) => {
+  for (let { name, value } of node.attributes) {
     o[name] = value === '' ? true : value;
-  });
+  }
   return o;
 };
 
