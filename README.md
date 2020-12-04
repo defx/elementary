@@ -28,7 +28,7 @@ Using unpkg CDN:
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@1.0.0';
+  import define from 'https://unpkg.com/@defx/elementary@0.1.0';
 </script>
 ```
 
@@ -36,7 +36,7 @@ Using unpkg CDN:
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@1.0.0';
+  import define from 'https://unpkg.com/@defx/elementary@0.1.0';
 
   let count = 0;
 
