@@ -1,6 +1,8 @@
-# @defx/elementary
+# elementary
 
-Simple Custom Elements.
+## [![npm](https://img.shields.io/npm/v/@defx/elementary.svg)](http://npm.im/@defx/elementary) [![Build Status](https://travis-ci.com/defx/elementary.svg?branch=master)](https://travis-ci.com/defx/elementary) [![Coverage Status](https://coveralls.io/repos/github/defx/elementary/badge.svg?branch=master)](https://coveralls.io/github/defx/elementary?branch=master) [![gzip size](https://img.badgesize.io/https://unpkg.com/elementary/dist/elementary.min.js?compression=gzip&label=gzip)]()
+
+Web Components for Humans.
 
 ## Features
 
@@ -26,15 +28,15 @@ Using unpkg CDN:
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@x.x.x';
+  import define from 'https://unpkg.com/@defx/elementary@1.0.0';
 </script>
 ```
 
-## Usage
+## Example
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@0.0.1';
+  import define from 'https://unpkg.com/@defx/elementary@1.0.0';
 
   let count = 0;
 
@@ -66,7 +68,7 @@ Using unpkg CDN:
     </button>
   </h3>
   <div hidden="{{ !expanded }}" aria-labelledby="{{ id }}">
-    <slot name="panel-content"></slot>
+    <slot></slot>
   </div>
 </template>
 ```

@@ -1,6 +1,5 @@
-export default function merge(targetNode, templateNode) {
-  let namedSlots = templateNode.querySelectorAll('slot[name]');
-  let slotWithoutName = false;
+export default function merge(targetNode, sourceNode) {
+  let namedSlots = sourceNode.querySelectorAll('slot[name]');
 
   namedSlots.forEach((slot) => {
     let name = slot.attributes.name.value;
@@ -8,16 +7,15 @@ export default function merge(targetNode, templateNode) {
     if (!node) return;
     node.removeAttribute('slot');
     slot.parentNode.replaceChild(node, slot);
-    //?remove slot if no match?
   });
 
-  let anonSlot = templateNode.querySelector('slot:not([name])');
+  let defaultSlot = sourceNode.querySelector('slot:not([name])');
 
-  if (anonSlot) {
+  if (defaultSlot) {
     let frag = document.createDocumentFragment();
     while (targetNode.childNodes.length > 0) {
       frag.appendChild(targetNode.childNodes[0]);
     }
-    anonSlot.parentNode.replaceChild(frag, anonSlot);
+    defaultSlot.parentNode.replaceChild(frag, defaultSlot);
   }
 }

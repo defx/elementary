@@ -1,5 +1,4 @@
-import synergy from './node_modules/synergy/src/index.js';
-// import synergy from './synergy.js';
+import synergy from '../node_modules/synergy/src/index.js';
 
 import mergeSlots from './slots.js';
 
