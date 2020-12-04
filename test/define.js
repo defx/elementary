@@ -62,4 +62,54 @@ describe('define', () => {
     let el = document.querySelector(name);
     assert.equal(el.hasAttribute('hidden'), false);
   });
+  it('should manually resolve default slot', () => {
+    let name = `x-${count++}`;
+    define(name, () => ({}), '<p>one</p><slot></slot><p>two</p>');
+    assert.ok(customElements.get(name));
+    mount(`
+    <${name}><span>Hey!</span></${name}>
+    `);
+    let el = document.querySelector(name);
+    assert.equal(el.innerHTML, '<p>one</p><span>Hey!</span><p>two</p>');
+  });
+  it('should manually resolve named slots', () => {
+    let name = `x-${count++}`;
+    define(name, () => ({}), '<slot name="first">one</slot><p>bar</p><slot name="last">two</slot>');
+    assert.ok(customElements.get(name));
+    mount(`
+    <${name}><span slot="first">foo</span><span slot="last">baa</span></${name}>
+    `);
+    let el = document.querySelector(name);
+    assert.equal(el.innerHTML, '<span>foo</span><p>bar</p><span>baa</span>');
+  });
+  it('should preserve default content of unmatched default slot', () => {
+    let name = `x-${count++}`;
+    define(name, () => ({}), '<slot>one</slot>');
+    assert.ok(customElements.get(name));
+    mount(`
+    <${name}></${name}>
+    `);
+    let el = document.querySelector(name);
+    assert.equal(el.innerHTML, 'one');
+  });
+  it('should preserve default content of unmatched default slot', () => {
+    let name = `x-${count++}`;
+    define(name, () => ({}), '<slot>one</slot>');
+    assert.ok(customElements.get(name));
+    mount(`
+    <${name}>foo<span slot="last">baa</span></${name}>
+    `);
+    let el = document.querySelector(name);
+    assert.equal(el.innerHTML, 'foo<span slot="last">baa</span>');
+  });
+  it('should preserve default content of unmatched named slot', () => {
+    let name = `x-${count++}`;
+    define(name, () => ({}), '<slot name="first">one</slot>');
+    assert.ok(customElements.get(name));
+    mount(`
+    <${name}>foo<span slot="last">baa</span></${name}>
+    `);
+    let el = document.querySelector(name);
+    assert.equal(el.innerHTML, 'one');
+  });
 });
