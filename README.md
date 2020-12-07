@@ -6,11 +6,9 @@ Web Components for Humans.
 
 ## Features
 
-- Declarative data binding
+- Reactive data binding with Synergy
+- Declarative Shadow DOM polyfill
 - Factory functions instead of classes
-- No Shadow DOM
-- Manually resolved template slots
-- Pre-render / hydrate
 
 ## Browser Support
 

@@ -1,6 +1,5 @@
-import synergy from '../node_modules/synergy/src/index.js';
-
-import mergeSlots from './slots.js';
+// import synergy from '../node_modules/synergy/src/index.js';
+import synergy from '../synergy.js';
 
 const initialAttributes = (node) => {
   const o = {};
@@ -23,6 +22,8 @@ const forwards = [
   'disconnectedCallback',
   'adoptedCallback',
 ];
+
+const dsrSupported = HTMLTemplateElement.prototype.hasOwnProperty('shadowRoot');
 
 const define = (
   name,
@@ -50,9 +51,20 @@ const define = (
         }
       });
 
-      wrap(viewmodel, 'preAppendCallback', (el) => mergeSlots(this, el));
+      let dsr = this.querySelector(`template[shadowroot]`);
 
-      this.viewmodel = synergy.render(this, viewmodel, template);
+      if (dsr && !dsrSupported) {
+        const mode = dsr.getAttribute('shadowroot');
+        const shadowRoot = dsr.parentNode.attachShadow({ mode });
+        shadowRoot.appendChild(dsr.content);
+        dsr.remove();
+      }
+
+      this.viewmodel = synergy.render(
+        dsr ? this.shadowRoot : this,
+        viewmodel,
+        template
+      );
     }
     attributeChangedCallback(k, _, v) {
       if (this.viewmodel) this.viewmodel[k] = v === '' ? true : v;
