@@ -26,7 +26,7 @@ Using unpkg CDN:
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@0.1.0';
+  import define from 'https://unpkg.com/@defx/elementary@0.2.0';
 </script>
 ```
 
@@ -34,7 +34,7 @@ Using unpkg CDN:
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@0.1.0';
+  import define from 'https://unpkg.com/@defx/elementary@0.2.0';
 
   let count = 0;
 
@@ -54,7 +54,7 @@ Using unpkg CDN:
 
   define('x-drawer', factory);
 </script>
-<template id="x-drawer">
+<template id="x-drawer" shadowroot="open">
   <h3>
     <button
       id="{{ id }}"
