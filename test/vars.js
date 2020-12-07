@@ -15,6 +15,7 @@ const mount = (html) => (document.getElementById('container').innerHTML = html);
 const nextFrame = () =>
   new Promise((resolve) => requestAnimationFrame(resolve));
 
+window.html = html;
 window.mount = mount;
 window.nextFrame = nextFrame;
 window.assert = chai.assert;

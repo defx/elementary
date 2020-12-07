@@ -4,11 +4,11 @@
 
 Web Components for Humans.
 
-## Features
+Elementary combines the reactive/declarative rendering power of [Synergy](https://github.com/defx/synergy) with the compositional power of Custom Elements.
 
-- Reactive data binding with [Synergy](https://github.com/defx/synergy)
-- Declarative Shadow DOM
-- Factory functions instead of classes
+Implements the experimental Declarative Shadow DOM specification, removing all of the boilerplate of writing imperative Shadow DOM today, whilst setting you up for natively supported pre-rendering in the future.
+
+Elementary's adapter free's you from the compositional constraints of Classes and provides you instead with all of the freedom of Factory functions when composing your Custom Elements.
 
 ## Browser Support
 

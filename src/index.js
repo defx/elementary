@@ -53,7 +53,7 @@ const define = (
 
       let dsr = this.querySelector(`template[shadowroot]`);
 
-      if (dsr && !dsrSupported) {
+      if (dsr && !dsrSupported && !this.shadowRoot) {
         const mode = dsr.getAttribute('shadowroot');
         const shadowRoot = dsr.parentNode.attachShadow({ mode });
         shadowRoot.appendChild(dsr.content);
