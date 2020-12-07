@@ -6,8 +6,8 @@ Web Components for Humans.
 
 ## Features
 
-- Reactive data binding with Synergy
-- Declarative Shadow DOM polyfill
+- Reactive data binding with [Synergy](https://github.com/defx/synergy)
+- Declarative Shadow DOM
 - Factory functions instead of classes
 
 ## Browser Support
@@ -33,6 +33,31 @@ Using unpkg CDN:
 ## Example
 
 ```html
+<x-drawer title="foo">
+  <template shadowroot="open">
+    <style>
+      button {
+        all: inherit;
+      }
+    </style>
+    <h3>
+      <button
+        id="{{ id }}"
+        disabled="{{ disabled }}"
+        aria-expanded="{{ expanded }}"
+        onclick="toggle"
+      >
+        {{ title }}
+      </button>
+    </h3>
+    <div hidden="{{ !expanded }}" aria-labelledby="{{ id }}">
+      <slot></slot>
+    </div>
+  </template>
+</x-drawer>
+
+<!-- ... -->
+
 <script type="module">
   import define from 'https://unpkg.com/@defx/elementary@0.2.0';
 
@@ -54,19 +79,4 @@ Using unpkg CDN:
 
   define('x-drawer', factory);
 </script>
-<template id="x-drawer" shadowroot="open">
-  <h3>
-    <button
-      id="{{ id }}"
-      disabled="{{ disabled }}"
-      aria-expanded="{{ expanded }}"
-      onclick="toggle"
-    >
-      {{ title }}
-    </button>
-  </h3>
-  <div hidden="{{ !expanded }}" aria-labelledby="{{ id }}">
-    <slot></slot>
-  </div>
-</template>
 ```
