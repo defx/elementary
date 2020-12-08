@@ -63,7 +63,7 @@ describe('define', () => {
     assert.equal(el.hasAttribute('hidden'), false);
   });
 
-  it('should support declarative shadow dom', () => {
+  it.only('should support declarative shadow dom', () => {
     if (HTMLTemplateElement.prototype.hasOwnProperty('shadowRoot')) return;
 
     let name = `x-${count++}`;
@@ -105,6 +105,7 @@ describe('define', () => {
           <slot></slot>
         </div>
       </template>
+      <p>boo!</p>
     </${name}>
     `);
 

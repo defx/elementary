@@ -1,5 +1,4 @@
-// import synergy from '../node_modules/synergy/src/index.js';
-import synergy from '../synergy.js';
+import synergy from '../node_modules/synergy/src/index.js';
 
 const initialAttributes = (node) => {
   const o = {};
@@ -23,7 +22,9 @@ const forwards = [
   'adoptedCallback',
 ];
 
-const dsrSupported = HTMLTemplateElement.prototype.hasOwnProperty('shadowRoot');
+const shadowRootTemplateSupport = HTMLTemplateElement.prototype.hasOwnProperty(
+  'shadowRoot'
+);
 
 const define = (
   name,
@@ -51,17 +52,21 @@ const define = (
         }
       });
 
-      let dsr = this.querySelector(`template[shadowroot]`);
+      let shadowRootTemplate = this.querySelector(`template[shadowroot]`);
 
-      if (dsr && !dsrSupported && !this.shadowRoot) {
-        const mode = dsr.getAttribute('shadowroot');
-        const shadowRoot = dsr.parentNode.attachShadow({ mode });
-        shadowRoot.appendChild(dsr.content);
-        dsr.remove();
+      if (
+        shadowRootTemplate &&
+        !shadowRootTemplateSupport &&
+        !this.shadowRoot
+      ) {
+        const mode = shadowRootTemplate.getAttribute('shadowroot');
+        const shadowRoot = shadowRootTemplate.parentNode.attachShadow({ mode });
+        shadowRoot.appendChild(shadowRootTemplate.content);
+        shadowRootTemplate.remove();
       }
 
       this.viewmodel = synergy.render(
-        dsr ? this.shadowRoot : this,
+        shadowRootTemplate ? this.shadowRoot : this,
         viewmodel,
         template
       );
