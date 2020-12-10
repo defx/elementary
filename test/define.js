@@ -63,9 +63,7 @@ describe('define', () => {
     assert.equal(el.hasAttribute('hidden'), false);
   });
 
-  it.only('should support declarative shadow dom', () => {
-    if (HTMLTemplateElement.prototype.hasOwnProperty('shadowRoot')) return;
-
+  it('should support shadow dom via template attribute', () => {
     let name = `x-${count++}`;
 
     const factory = ({ expanded = false, title, disabled = false }) => {
@@ -84,8 +82,7 @@ describe('define', () => {
     define(name, factory);
 
     mount(html`
-    <${name} title="blah">
-      <template shadowroot="open">
+      <template id="${name}" shadow="open">
         <style>
           button {
             all: inherit;
@@ -105,8 +102,7 @@ describe('define', () => {
           <slot></slot>
         </div>
       </template>
-      <p>boo!</p>
-    </${name}>
+      <${name} title="blah"></${name}>
     `);
 
     let el = document.querySelector(name);

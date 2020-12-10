@@ -10,7 +10,7 @@
     "dist"
   ],
   "dependencies": {
-    "synergy": "1.4.0"
+    "synergy": "1.4.2"
   },
   "devDependencies": {
     "@open-wc/karma-esm": "^3.0.5",

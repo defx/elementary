@@ -22,15 +22,7 @@ const forwards = [
   'adoptedCallback',
 ];
 
-const shadowRootTemplateSupport = HTMLTemplateElement.prototype.hasOwnProperty(
-  'shadowRoot'
-);
-
-const define = (
-  name,
-  factory,
-  template = document.querySelector(`template#${name}`)
-) => {
+const define = (name, factory, template) => {
   const observedAttributes = factory.observedAttributes || [];
 
   let X = class extends HTMLElement {
@@ -52,21 +44,16 @@ const define = (
         }
       });
 
-      let shadowRootTemplate = this.querySelector(`template[shadowroot]`);
+      template = template || document.querySelector(`template#${name}`);
 
-      if (
-        shadowRootTemplate &&
-        !shadowRootTemplateSupport &&
-        !this.shadowRoot
-      ) {
-        const mode = shadowRootTemplate.getAttribute('shadowroot');
-        const shadowRoot = shadowRootTemplate.parentNode.attachShadow({ mode });
-        shadowRoot.appendChild(shadowRootTemplate.content);
-        shadowRootTemplate.remove();
+      if (typeof template !== 'string' && template.hasAttribute('shadow')) {
+        this.attachShadow({
+          mode: template.getAttribute('shadow'),
+        });
       }
 
       this.viewmodel = synergy.render(
-        shadowRootTemplate ? this.shadowRoot : this,
+        this.shadowRoot || this,
         viewmodel,
         template
       );
