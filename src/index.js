@@ -50,7 +50,7 @@ const define = (
   const observedAttributes = factory.observedAttributes || [];
 
   if (typeof template === 'string') template = templateNodeFromString(template);
-  let styleNode = template.content.querySelector('style');
+  let styleNode = template.content.querySelector('style[scoped]');
 
   if (styleNode && !stylesExistInDoc(name)) {
     mountStyles(name, prefixSelectors(name, styleNode.textContent));

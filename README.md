@@ -4,17 +4,6 @@
 
 Elementary is a lightweight wrapper around the [Synergy](https://github.com/defx/synergy) library, allowing you to create reusable Custom Elements with declarative templates and reactive data bindings.
 
-Check out the Synergy README first if you're not already familiar!
-
-## Features
-
-- Declarative templates
-- Reactive data binding
-- Small footprint (<4k)
-- No special tooling required (e.g., compilers, plugins)
-- Minimal learning curve (almost entirely standard HTML, JS, and CSS!)
-- Opt-in Shadow DOM
-
 ## Browser Support
 
 Works in any [modern browser](https://caniuse.com/mdn-javascript_builtins_proxy_proxy) that supports JavaScript Proxy.
@@ -31,7 +20,7 @@ Using unpkg CDN:
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@0.3.0';
+  import define from 'https://unpkg.com/@defx/elementary@0.4.0';
 </script>
 ```
 
@@ -51,13 +40,13 @@ define(tagName, factory, template);
 
 - `factory` A Factory function that returns a plain JavaScript object that will provide the data for your element.
 
-- `template` (optional) Either an HTML string or a `<template>` node. If ommited, Elementary expects your document to include a [Template](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template) element with an id matching `tagName`.
+- `template` (optional) Either an HTML string or a `<template>` element. If ommited, Elementary expects your document to include a Template element with an id matching `tagName`.
 
 ### Example
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@0.3.0';
+  import define from 'https://unpkg.com/@defx/elementary@0.4.0';
 
   let count = 0;
 
@@ -77,7 +66,7 @@ define(tagName, factory, template);
 
   define('x-drawer', factory);
 </script>
-<template id="x-drawer" shadow="open">
+<template id="x-drawer">
   <style>
     button {
       all: inherit;
@@ -105,6 +94,24 @@ In the example above, we create a new `x-drawer` Custom Element that can be used
 <x-drawer title="foo"></x-drawer>
 ```
 
-In the example above, I've used a Template element to contain my Custom Elements markup, but you can also pass your template as a string or element node as the third argument to `define` (see [#parameters](#parameters) above).
+## Factory Props
 
-I've used the `shadow` attribute on my template to tell Elementary that I want to use Shadow DOM in 'open' mode. Using Shadow DOM is entirely optional, and you simply omit the `shadow` attribute from your template if you don't wish to use it. If you _do_ use it, then you should provide an attribute value of either `open` or `closed` to indicate the Shadow root "mode". For more info, see [Using Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
+The elements initial attribute keys and values will be passed to your factory function during initialisation
+
+## Observed Attributes
+
+Observed attributes can be declared directly on your factory function like so...
+
+```js
+const factory = (props) => props;
+
+factory.observedAttributes = ['name'];
+```
+
+## Slots
+
+Elementary doesn't support Shadow DOM, but it does polyfill (slots)[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot], so you can use these as per the spec to provide placeholders for custom markup.
+
+## Scoped CSS
+
+Elementary provides lightweight, opt-in CSS scoping. Apply the `scoped` boolean attribute to a style tag within your Custom Elements template, and all of the selectors will be prefixed with an additional _type selector_ and hoisted up into the document head, giving you one style tag shared between all instances. This effectively stops your Custom Element styles from leaking _out_ into the document, but doesn't stop anything from sneaking in. Note that Elementary assumes that you will only every supply _one_ scoped style tag at the most, per Custom Element.

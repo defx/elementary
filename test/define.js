@@ -66,7 +66,7 @@ describe('define', () => {
     let name = `x-${count++}`;
     let factory = () => ({});
     define(name, factory, html`
-      <style>
+      <style scoped>
         button,
         p {
           all: inherit;
