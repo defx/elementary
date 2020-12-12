@@ -67,7 +67,7 @@ define(tagName, factory, template);
   define('x-drawer', factory);
 </script>
 <template id="x-drawer">
-  <style>
+  <style scoped>
     button {
       all: inherit;
     }
