@@ -7,7 +7,7 @@ window.onload = function () {
   document.body.appendChild(container);
 };
 
-const html = (strings, ...values) =>
+const identityTpl = (strings, ...values) =>
   strings.reduce((a, v, i) => a + v + (values[i] || ''), '');
 
 const mount = (html) => (document.getElementById('container').innerHTML = html);
@@ -15,7 +15,8 @@ const mount = (html) => (document.getElementById('container').innerHTML = html);
 const nextFrame = () =>
   new Promise((resolve) => requestAnimationFrame(resolve));
 
-window.html = html;
+window.html = identityTpl;
+window.css = identityTpl;
 window.mount = mount;
 window.nextFrame = nextFrame;
 window.assert = chai.assert;

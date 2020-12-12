@@ -1,4 +1,8 @@
-import synergy from '../node_modules/synergy/src/index.js';
+// import synergy from '../node_modules/synergy/src/index.js';
+import synergy from '../synergy.js';
+
+import prefixSelectors from './prefixSelectors.js';
+import mergeSlots from './mergeSlots.js';
 
 const initialAttributes = (node) => {
   const o = {};
@@ -22,8 +26,37 @@ const forwards = [
   'adoptedCallback',
 ];
 
-const define = (name, factory, template) => {
+function templateNodeFromString(v = '') {
+  let tpl = document.createElement('template');
+  tpl.innerHTML = v;
+  return tpl;
+}
+
+function stylesExistInDoc(name) {
+  return document.querySelector(`head style[id="elementary-${name}"]`);
+}
+
+function mountStyles(name, css) {
+  let el = document.createElement('style');
+  el.textContent = css;
+  el.id = `elementary-${name}`;
+  document.head.appendChild(el);
+}
+
+const define = (
+  name,
+  factory,
+  template = document.querySelector(`template#${name}`)
+) => {
   const observedAttributes = factory.observedAttributes || [];
+
+  if (typeof template === 'string') template = templateNodeFromString(template);
+  let styleNode = template.content.querySelector('style');
+
+  if (styleNode && !stylesExistInDoc(name)) {
+    mountStyles(name, prefixSelectors(name, styleNode.textContent));
+    styleNode.remove();
+  }
 
   let X = class extends HTMLElement {
     static get observedAttributes() {
@@ -44,19 +77,9 @@ const define = (name, factory, template) => {
         }
       });
 
-      template = template || document.querySelector(`template#${name}`);
+      viewmodel.beforeMountCallback = (frag) => mergeSlots(frag, this);
 
-      if (typeof template !== 'string' && template.hasAttribute('shadow')) {
-        this.attachShadow({
-          mode: template.getAttribute('shadow'),
-        });
-      }
-
-      this.viewmodel = synergy.render(
-        this.shadowRoot || this,
-        viewmodel,
-        template
-      );
+      this.viewmodel = synergy.render(this, viewmodel, template);
     }
     attributeChangedCallback(k, _, v) {
       if (this.viewmodel) this.viewmodel[k] = v === '' ? true : v;

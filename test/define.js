@@ -62,50 +62,32 @@ describe('define', () => {
     let el = document.querySelector(name);
     assert.equal(el.hasAttribute('hidden'), false);
   });
-
-  it('should support shadow dom via template attribute', () => {
+  it('should extract style element, prefix selectors with type selector and append styles to document head', () => {
     let name = `x-${count++}`;
-
-    const factory = ({ expanded = false, title, disabled = false }) => {
-      return {
-        id: `drawer-0`,
-        title,
-        expanded,
-        disabled,
-        toggle() {
-          this.expanded = !this.expanded;
-        },
-      };
-    };
-
-    factory.observedAttributes = ['expanded'];
-    define(name, factory);
-
-    mount(html`
-      <template id="${name}" shadow="open">
-        <style>
-          button {
-            all: inherit;
-          }
-        </style>
-        <h3>
-          <button
-            id="{{ id }}"
-            disabled="{{ disabled }}"
-            aria-expanded="{{ expanded }}"
-            onclick="toggle"
-          >
-            {{ title }}
-          </button>
-        </h3>
-        <div hidden="{{ !expanded }}" aria-labelledby="{{ id }}">
-          <slot></slot>
-        </div>
-      </template>
-      <${name} title="blah"></${name}>
+    let factory = () => ({});
+    define(name, factory, html`
+      <style>
+        button {
+          all: inherit;
+        }
+      </style>
+      <p>Hello world!</p>
     `);
+    mount(`
+        <${name}></${name}>
+        `);
 
     let el = document.querySelector(name);
-    assert.equal(el.shadowRoot.querySelector('h3 button').textContent, 'blah');
+    let style = document.querySelector(`head style[id="elementary-${name}"]`);
+    assert.equal(el.innerHTML.trim(), '<p>Hello world!</p>');
+    assert.ok(style);
+    assert.equal(
+      style.textContent,
+      css`
+        ${name} button {
+          all: inherit;
+        }
+      `
+    );
   });
 });
