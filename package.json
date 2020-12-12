@@ -1,6 +1,6 @@
 {
   "name": "@defx/elementary",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Simple Custom Elements.",
   "main": "dist/elementary.min.js",
   "browser": "dist/elementary.min.js",
