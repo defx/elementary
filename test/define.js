@@ -67,7 +67,8 @@ describe('define', () => {
     let factory = () => ({});
     define(name, factory, html`
       <style>
-        button {
+        button,
+        p {
           all: inherit;
         }
       </style>
@@ -84,10 +85,36 @@ describe('define', () => {
     assert.equal(
       style.textContent,
       css`
-        ${name} button {
+        ${name} button,
+        ${name} p {
           all: inherit;
         }
       `
     );
+  });
+
+  it('should merge default slot', () => {
+    let name = `x-${count++}`;
+    let factory = () => ({});
+    define(name, factory, html`hello <slot></slot>!`);
+    mount(`
+        <${name}>world</${name}>
+        `);
+
+    let el = document.querySelector(name);
+    assert.equal(el.innerHTML.trim(), 'hello world!');
+  });
+
+  it('should merge named slots', () => {
+    let name = `x-${count++}`;
+    let factory = () => ({});
+    define(name, factory, html`<slot name="foo"></slot><slot name="bar"></slot
+      ><slot>hello</slot>`);
+    mount(`
+        <${name}><span slot="foo">!</span></${name}>
+        `);
+
+    let el = document.querySelector(name);
+    assert.equal(el.innerHTML.trim(), '<span>!</span>hello');
   });
 });

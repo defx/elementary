@@ -24,7 +24,7 @@ function mergeSlots(targetNode, sourceNode) {
 
   if (defaultSlot) {
     defaultSlot.parentNode.replaceChild(
-      childNodes(targetNode.childNodes.length ? targetNode : defaultSlot),
+      childNodes(targetNode.innerHTML.trim() ? targetNode : defaultSlot),
       defaultSlot
     );
   }

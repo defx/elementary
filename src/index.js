@@ -1,5 +1,4 @@
-// import synergy from '../node_modules/synergy/src/index.js';
-import synergy from '../synergy.js';
+import synergy from '../node_modules/synergy/src/index.js';
 
 import prefixSelectors from './prefixSelectors.js';
 import mergeSlots from './mergeSlots.js';
@@ -77,7 +76,7 @@ const define = (
         }
       });
 
-      viewmodel.beforeMountCallback = (frag) => mergeSlots(frag, this);
+      viewmodel.beforeMountCallback = (frag) => mergeSlots(this, frag);
 
       this.viewmodel = synergy.render(this, viewmodel, template);
     }
