@@ -20,7 +20,7 @@ Using unpkg CDN:
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@0.4.0';
+  import define from 'https://unpkg.com/@defx/elementary@0.4.1';
 </script>
 ```
 
@@ -46,7 +46,7 @@ define(tagName, factory, template);
 
 ```html
 <script type="module">
-  import define from 'https://unpkg.com/@defx/elementary@0.4.0';
+  import define from 'https://unpkg.com/@defx/elementary@0.4.1';
 
   let count = 0;
 
