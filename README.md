@@ -2,6 +2,8 @@
 
 ## [![npm](https://img.shields.io/npm/v/@defx/elementary.svg)](http://npm.im/@defx/elementary) [![Build Status](https://travis-ci.com/defx/elementary.svg?branch=main)](https://travis-ci.com/defx/elementary) [![Coverage Status](https://coveralls.io/repos/github/defx/elementary/badge.svg?branch=main)](https://coveralls.io/github/defx/elementary?branch=main) [![gzip size](https://img.badgesize.io/https://unpkg.com/@defx/elementary/dist/elementary.min.js?compression=gzip&label=gzip)]()
 
+**This is no longer supported, please consider using [Synergy](https://synergyjs.org/) which provides all of same the features and much more.**
+
 Elementary is a lightweight wrapper around the [Synergy](https://github.com/defx/synergy) library, allowing you to create reusable Custom Elements with declarative templates and reactive data bindings.
 
 ## Browser Support
@@ -73,12 +75,7 @@ define(tagName, factory, template);
     }
   </style>
   <h3>
-    <button
-      id="{{ id }}"
-      disabled="{{ disabled }}"
-      aria-expanded="{{ expanded }}"
-      onclick="toggle"
-    >
+    <button id="{{ id }}" disabled="{{ disabled }}" aria-expanded="{{ expanded }}" onclick="toggle">
       {{ title }}
     </button>
   </h3>
